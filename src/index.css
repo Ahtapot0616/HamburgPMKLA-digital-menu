@@ -1,0 +1,127 @@
+/* ========================================================
+   PAMUKKALE DIGITAL MENU — DESIGN SYSTEM TOKENS & BASE
+   ======================================================== */
+
+:root {
+  /* Color Palette */
+  --bg: #0c0907;
+  --bg-deep: #080605;
+  --surface: #17120e;
+  --surface-alt: #221b15;
+  --surface-glass: rgba(23, 18, 14, 0.75);
+  
+  /* Gold Accents */
+  --gold: #c99e52;
+  --gold-light: #e6c587;
+  --gold-dark: #966f2c;
+  --gold-glow: rgba(201, 158, 82, 0.25);
+  --gold-subtle: rgba(201, 158, 82, 0.12);
+
+  /* Typography Colors */
+  --white: #faf7f2;
+  --text-main: #f0ebe1;
+  --text-muted: rgba(240, 235, 225, 0.6);
+  --text-subtle: rgba(240, 235, 225, 0.38);
+
+  /* Borders & Shadows */
+  --border-subtle: rgba(201, 158, 82, 0.16);
+  --border-medium: rgba(201, 158, 82, 0.32);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.7);
+
+  /* Font Families */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout */
+  --max-width: 1040px;
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-main);
+  background: var(--bg);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(201, 158, 82, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 100% 40%, rgba(130, 40, 20, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 0% 80%, rgba(201, 158, 82, 0.04) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography Defaults */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--white);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 158, 82, 0.25);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 158, 82, 0.45);
+}
+
+/* Accessibility */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

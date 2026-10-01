@@ -1,0 +1,38 @@
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 3px 10px;
+  backdrop-filter: blur(8px);
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 12px;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.lang-btn--active {
+  color: var(--gold);
+}
+
+.lang-btn:hover:not(.lang-btn--active) {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.lang-divider {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.65rem;
+  user-select: none;
+}

@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { useLang } from '../context/LangContext';
+import { CategoryIcon } from './Icons';
 import './CategoryBar.css';
 
 export default function CategoryBar({ categories, activeId, onSelect }) {
@@ -10,11 +11,14 @@ export default function CategoryBar({ categories, activeId, onSelect }) {
   // Scroll active pill into view whenever it changes
   useEffect(() => {
     if (activeRef.current && barRef.current) {
-      activeRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      });
+      const bar = barRef.current;
+      const pill = activeRef.current;
+      const barRect = bar.getBoundingClientRect();
+      const pillRect = pill.getBoundingClientRect();
+
+      // Center the active pill in the scrollable area
+      const scrollLeft = pill.offsetLeft - bar.offsetLeft - (barRect.width / 2) + (pillRect.width / 2);
+      bar.scrollTo({ left: scrollLeft, behavior: 'smooth' });
     }
   }, [activeId]);
 
@@ -36,12 +40,17 @@ export default function CategoryBar({ categories, activeId, onSelect }) {
               onClick={() => onSelect(cat.id)}
               aria-current={isActive ? 'true' : undefined}
             >
-              <span className="cat-icon" aria-hidden="true">{cat.icon}</span>
+              <span className="cat-icon" aria-hidden="true">
+                <CategoryIcon id={cat.id} size={16} />
+              </span>
               <span className="cat-label">{cat.label[lang]}</span>
             </button>
           );
         })}
       </div>
+      {/* Fade edges to indicate scrollability */}
+      <div className="catbar-fade catbar-fade--left" aria-hidden="true" />
+      <div className="catbar-fade catbar-fade--right" aria-hidden="true" />
     </nav>
   );
 }

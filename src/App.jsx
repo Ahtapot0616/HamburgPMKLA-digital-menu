@@ -1,11 +1,13 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { LangProvider, useLang } from './context/LangContext';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
+import FeaturedDishes from './components/FeaturedDishes';
 import SearchBar from './components/SearchBar';
 import CategoryBar from './components/CategoryBar';
 import FoodCard from './components/FoodCard';
 import FoodModal from './components/FoodModal';
+import { CategoryIcon, IconVegetarian, IconVegan, IconSpicy } from './components/Icons';
 import { categories, menuItems } from './data/menu';
 import './App.css';
 
@@ -18,6 +20,7 @@ function MenuContent() {
   const [selectedDietary, setSelectedDietary] = useState('all'); // 'all', 'vegetarian', 'vegan', 'spicy'
   const [selectedItem, setSelectedItem] = useState(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const sectionRefs = useRef({});
 
   // Monitor scroll for back-to-top button
   useEffect(() => {
@@ -35,7 +38,7 @@ function MenuContent() {
   // Full category list including "All"
   const allCategories = useMemo(() => {
     return [
-      { id: 'all', label: { en: 'All Items', de: 'Alle Gerichte' }, icon: '✨' },
+      { id: 'all', label: { en: 'All Items', de: 'Alle Gerichte' } },
       ...categories,
     ];
   }, []);
@@ -97,15 +100,33 @@ function MenuContent() {
 
   const activeCategoryObj = categories.find((c) => c.id === activeCategory);
 
+  const handleCategorySelect = useCallback((id) => {
+    setActiveCategory(id);
+    const contentEl = document.getElementById('menu-content-anchor');
+    if (contentEl) {
+      contentEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
+
+  const setSectionRef = useCallback((catId) => (el) => {
+    sectionRefs.current[catId] = el;
+  }, []);
+
   return (
     <div className="menu-app">
       {/* Sticky Header */}
       <Header />
 
-      {/* Hero Presentation */}
+      {/* Hero Atmosphere */}
       <HeroSection />
 
-      {/* Main Search Bar */}
+      {/* Chef's Signatures Carousel */}
+      <FeaturedDishes onSelectItem={setSelectedItem} />
+
+      {/* Anchor for smooth scroll navigation */}
+      <div id="menu-content-anchor" />
+
+      {/* Main Search Bar & Dietary Quick Toggles */}
       <div className="menu-controls-wrapper">
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
 
@@ -122,19 +143,22 @@ function MenuContent() {
               className={`dietary-filter-pill ${selectedDietary === 'vegetarian' ? 'dietary-filter-pill--active' : ''}`}
               onClick={() => setSelectedDietary(selectedDietary === 'vegetarian' ? 'all' : 'vegetarian')}
             >
-              🥦 {lang === 'de' ? 'Vegetarisch' : 'Vegetarian'}
+              <IconVegetarian size={13} className="filter-pill-icon" />
+              <span>{lang === 'de' ? 'Vegetarisch' : 'Vegetarian'}</span>
             </button>
             <button
               className={`dietary-filter-pill ${selectedDietary === 'vegan' ? 'dietary-filter-pill--active' : ''}`}
               onClick={() => setSelectedDietary(selectedDietary === 'vegan' ? 'all' : 'vegan')}
             >
-              🌱 {lang === 'de' ? 'Vegan' : 'Vegan'}
+              <IconVegan size={13} className="filter-pill-icon" />
+              <span>{lang === 'de' ? 'Vegan' : 'Vegan'}</span>
             </button>
             <button
               className={`dietary-filter-pill ${selectedDietary === 'spicy' ? 'dietary-filter-pill--active' : ''}`}
               onClick={() => setSelectedDietary(selectedDietary === 'spicy' ? 'all' : 'spicy')}
             >
-              🌶 {lang === 'de' ? 'Scharf' : 'Spicy'}
+              <IconSpicy size={13} className="filter-pill-icon" />
+              <span>{lang === 'de' ? 'Scharf' : 'Spicy'}</span>
             </button>
           </div>
         </div>
@@ -144,18 +168,8 @@ function MenuContent() {
       <CategoryBar
         categories={allCategories}
         activeId={activeCategory}
-        onSelect={(id) => {
-          setActiveCategory(id);
-          // When picking a category, if scrolled past hero, smooth scroll to content start
-          const contentEl = document.getElementById('menu-content-anchor');
-          if (contentEl && window.scrollY > 300) {
-            contentEl.scrollIntoView({ behavior: 'smooth' });
-          }
-        }}
+        onSelect={handleCategorySelect}
       />
-
-      {/* Anchor for smooth scroll navigation */}
-      <div id="menu-content-anchor" />
 
       {/* Menu Content Area */}
       <main className="menu-container">
@@ -166,7 +180,7 @@ function MenuContent() {
               {lang === 'de' ? (
                 <>
                   <strong>{filteredItems.length}</strong> Gerichte gefunden
-                  {searchQuery && <> für „<em>{searchQuery}</em>“</>}
+                  {searchQuery && <> für „<em>{searchQuery}</em>"</>}
                 </>
               ) : (
                 <>
@@ -189,14 +203,21 @@ function MenuContent() {
           </div>
         )}
 
-        {/* View Mode 1: Grouped by Category (when on "all" and not actively searching) */}
+        {/* View Mode 1: Grouped by Category */}
         {groupedCategories ? (
           <div className="category-sections">
             {groupedCategories.map((cat) => (
-              <section key={cat.id} className="category-section" id={`section-${cat.id}`}>
+              <section
+                key={cat.id}
+                className="category-section"
+                id={`section-${cat.id}`}
+                ref={setSectionRef(cat.id)}
+              >
                 <div className="category-section-header">
                   <div className="category-section-title-wrap">
-                    <span className="category-section-icon" aria-hidden="true">{cat.icon}</span>
+                    <span className="category-section-icon" aria-hidden="true">
+                      <CategoryIcon id={cat.id} size={22} />
+                    </span>
                     <h2 className="category-section-title">{cat.label[lang]}</h2>
                   </div>
                   <span className="category-section-count">
@@ -222,7 +243,7 @@ function MenuContent() {
             {activeCategory !== 'all' && searchQuery.trim() === '' && (
               <div className="single-category-header">
                 <span className="single-category-icon" aria-hidden="true">
-                  {activeCategoryObj?.icon}
+                  <CategoryIcon id={activeCategory} size={26} />
                 </span>
                 <div>
                   <h2 className="single-category-title">{activeCategoryObj?.label[lang]}</h2>
@@ -245,7 +266,9 @@ function MenuContent() {
               </div>
             ) : (
               <div className="empty-state">
-                <div className="empty-state-icon" aria-hidden="true">🍽️</div>
+                <div className="empty-state-icon" aria-hidden="true">
+                  <CategoryIcon id="grill" size={48} />
+                </div>
                 <h3 className="empty-state-title">
                   {lang === 'de' ? 'Keine Gerichte gefunden' : 'No dishes found'}
                 </h3>
@@ -279,31 +302,31 @@ function MenuContent() {
       )}
 
       {/* Back to top button */}
-      {showBackToTop && (
-        <button
-          className="back-to-top"
-          onClick={scrollToTop}
-          aria-label={lang === 'de' ? 'Nach oben scrollen' : 'Scroll to top'}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="18 15 12 9 6 15" />
-          </svg>
-        </button>
-      )}
+      <button
+        className={`back-to-top ${showBackToTop ? 'back-to-top--visible' : ''}`}
+        onClick={scrollToTop}
+        aria-label={lang === 'de' ? 'Nach oben scrollen' : 'Scroll to top'}
+        aria-hidden={!showBackToTop}
+        tabIndex={showBackToTop ? 0 : -1}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="18 15 12 9 6 15" />
+        </svg>
+      </button>
 
       {/* Restaurant Footer */}
       <footer className="site-footer">
         <div className="footer-inner">
           <div className="footer-brand">
             <div className="footer-logo">
-              <span className="footer-emblem" aria-hidden="true">✦</span>
+              <span className="footer-ornament" aria-hidden="true">◆</span>
               <span className="footer-brand-title">Pamukkale</span>
-              <span className="footer-emblem" aria-hidden="true">✦</span>
+              <span className="footer-ornament" aria-hidden="true">◆</span>
             </div>
             <p className="footer-tagline">
               {lang === 'de'
-                ? 'Authentische türkische Gastfreundschaft & kulinarische Tradition'
-                : 'Authentic Turkish hospitality & culinary tradition'}
+                ? 'Authentische anatolische Gastfreundschaft & Holzkohlegrill-Tradition'
+                : 'Authentic Anatolian hospitality & charcoal grill tradition'}
             </p>
           </div>
 
@@ -322,10 +345,10 @@ function MenuContent() {
             </div>
 
             <div className="footer-col">
-              <h4>{lang === 'de' ? 'Hinweis' : 'Notice'}</h4>
+              <h4>{lang === 'de' ? 'Hinweis für Gäste' : 'Guest Notice'}</h4>
               <p>
                 {lang === 'de'
-                  ? 'Dies ist eine digitale Speisekarte zur Ansicht. Bitte geben Sie Ihre Bestellung persönlich bei unserem Servicepersonal auf.'
+                  ? 'Dies ist eine digitale Speisekarte zur Tischanzeige. Bitte bestellen Sie direkt bei unserem Servicepersonal.'
                   : 'This is a digital viewing menu. Please place your order directly with our service staff.'}
               </p>
             </div>

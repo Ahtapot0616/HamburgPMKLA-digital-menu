@@ -1,35 +1,46 @@
+/* ── Premium Header ── */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(14, 10, 6, 0.88);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border-bottom: 1px solid rgba(192, 150, 80, 0.15);
+  background: rgba(11, 8, 6, 0.92);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border-bottom: 1px solid rgba(200, 161, 98, 0.1);
+  transition: background var(--duration-normal) ease;
 }
 
 .header-inner {
-  max-width: 900px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 20px;
-  height: 60px;
+  padding: 0 var(--space-md);
+  height: var(--header-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-sm);
 }
 
 .header-brand {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
 }
 
 .brand-emblem {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  filter: drop-shadow(0 0 6px rgba(192, 150, 80, 0.4));
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 0 8px rgba(200, 161, 98, 0.3));
+  transition: filter var(--duration-normal) ease;
+}
+
+.header-brand:hover .brand-emblem {
+  filter: drop-shadow(0 0 12px rgba(200, 161, 98, 0.5));
 }
 
 .brand-text {
@@ -43,15 +54,26 @@
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--white);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .brand-sub {
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 400;
   color: var(--gold);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   margin-top: 2px;
+  opacity: 0.85;
+}
+
+/* ── Mobile 320px optimization ── */
+@media (max-width: 360px) {
+  .brand-name {
+    font-size: 1rem;
+  }
+  .brand-sub {
+    font-size: 0.52rem;
+  }
 }

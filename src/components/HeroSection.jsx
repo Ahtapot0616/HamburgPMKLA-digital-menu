@@ -1,51 +1,53 @@
 import { useLang } from '../context/LangContext';
+import { IconEmblem, IconGrill } from './Icons';
 import './HeroSection.css';
 
 export default function HeroSection() {
   const { lang } = useLang();
 
   return (
-    <section className="hero" aria-label="Restaurant hero">
-      {/* Layered background */}
-      <div className="hero-bg">
-        <img
-          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80"
-          alt=""
-          className="hero-bg-img"
-          aria-hidden="true"
-          loading="eager"
-        />
-        <div className="hero-overlay" />
+    <section className="hero-luxury" aria-label="Restaurant hero">
+      {/* Background with warm ambient lighting & texture */}
+      <div className="hero-luxury-bg" aria-hidden="true">
+        <div className="hero-luxury-ambient-glow" />
+        <div className="hero-luxury-pattern" />
       </div>
 
-      {/* Decorative top arc */}
-      <div className="hero-arc" aria-hidden="true" />
-
-      <div className="hero-content">
-        {/* Ornament */}
-        <div className="hero-ornament" aria-hidden="true">
-          <span className="ornament-line" />
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M10 1L11.8 7.1H18.1L13 10.9L14.8 17L10 13.1L5.2 17L7 10.9L1.9 7.1H8.2L10 1Z" fill="var(--gold)" />
-          </svg>
-          <span className="ornament-line" />
+      <div className="hero-luxury-inner">
+        {/* Crest */}
+        <div className="hero-luxury-crest">
+          <IconEmblem size={34} className="hero-luxury-emblem" />
+          <span className="hero-luxury-est">EST. 1992 • BERLIN</span>
         </div>
 
-        <h1 className="hero-title">
-          <span className="hero-title-top">
-            {lang === 'de' ? 'Unsere Speisekarte' : 'Our Menu'}
+        {/* Title & Tagline */}
+        <div className="hero-luxury-headings">
+          <span className="hero-luxury-kicker">
+            <IconGrill size={13} className="hero-kicker-icon" />
+            <span>{lang === 'de' ? 'Ocakbaşı & Türkische Küche' : 'Authentic Anatolian Charcoal Grill'}</span>
           </span>
-          <span className="hero-title-brand">Pamukkale</span>
-        </h1>
+          <h1 className="hero-luxury-title">Pamukkale</h1>
+          <p className="hero-luxury-desc">
+            {lang === 'de'
+              ? 'Meisterhafte Holzkohlegrill-Spezialitäten, frisch gebackene Pide und traditionelle Meze in herzlicher Atmosphäre.'
+              : 'Mastercrafted charcoal grilled specialties, stone-baked pide, and traditional meze crafted with passion.'}
+          </p>
+        </div>
 
-        <p className="hero-subtitle">
-          {lang === 'de'
-            ? 'Authentische türkische Küche — mit Liebe zubereitet'
-            : 'Authentic Turkish cuisine — made with love'}
-        </p>
-
-        <div className="hero-scroll-hint" aria-hidden="true">
-          <span />
+        {/* Quick Highlights / Table Features */}
+        <div className="hero-luxury-features" aria-label="Restaurant attributes">
+          <span className="hero-feat-chip">
+            <span className="hero-feat-dot" />
+            {lang === 'de' ? 'Holzkohlegrill' : 'Charcoal Grill'}
+          </span>
+          <span className="hero-feat-chip">
+            <span className="hero-feat-dot" />
+            {lang === 'de' ? 'Täglich Frische Meze' : 'Fresh Daily Meze'}
+          </span>
+          <span className="hero-feat-chip">
+            <span className="hero-feat-dot" />
+            {lang === 'de' ? 'Steinofen Pide' : 'Stone-Oven Pide'}
+          </span>
         </div>
       </div>
     </section>

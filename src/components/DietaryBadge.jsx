@@ -1,8 +1,9 @@
 import { useLang } from '../context/LangContext';
+import { IconVegan, IconVegetarian, IconSpicy } from './Icons';
 import './DietaryBadge.css';
 
 /**
- * Small coloured tag for dietary indicators.
+ * Small luxury indicator badge for dietary requirements.
  * type: 'vegan' | 'vegetarian' | 'spicy'
  */
 export default function DietaryBadge({ type }) {
@@ -12,26 +13,30 @@ export default function DietaryBadge({ type }) {
     vegan: {
       label: { en: 'Vegan', de: 'Vegan' },
       className: 'badge--vegan',
-      icon: '🌱',
+      Icon: IconVegan,
     },
     vegetarian: {
       label: { en: 'Veg', de: 'Veg' },
       className: 'badge--veg',
-      icon: '🥦',
+      Icon: IconVegetarian,
     },
     spicy: {
       label: { en: 'Spicy', de: 'Scharf' },
       className: 'badge--spicy',
-      icon: '🌶',
+      Icon: IconSpicy,
     },
   };
 
   const c = config[type];
   if (!c) return null;
 
+  const IconComponent = c.Icon;
+
   return (
     <span className={`dietary-badge ${c.className}`} aria-label={c.label[lang]}>
-      <span aria-hidden="true">{c.icon}</span>
+      <span className="dietary-badge-icon" aria-hidden="true">
+        <IconComponent size={11} />
+      </span>
       <span>{c.label[lang]}</span>
     </span>
   );

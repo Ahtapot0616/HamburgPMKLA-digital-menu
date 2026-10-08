@@ -1,38 +1,54 @@
+/* ── Premium Language Switcher ── */
 .lang-switcher {
   display: flex;
   align-items: center;
-  gap: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  padding: 3px 10px;
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  padding: 3px 4px;
   backdrop-filter: blur(8px);
+  transition: border-color var(--duration-normal) ease;
+}
+
+.lang-switcher:hover {
+  border-color: rgba(200, 161, 98, 0.25);
 }
 
 .lang-btn {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.45);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 12px;
-  transition: color 0.2s ease;
-  font-family: inherit;
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  transition:
+    color var(--duration-fast) ease,
+    background var(--duration-fast) ease;
+  font-family: var(--font-body);
+  min-height: 28px;
+  min-width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lang-btn--active {
-  color: var(--gold);
+  color: var(--bg);
+  background: var(--gold);
 }
 
 .lang-btn:hover:not(.lang-btn--active) {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .lang-divider {
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.12);
+  font-size: 0.55rem;
   user-select: none;
+  margin: 0 1px;
 }

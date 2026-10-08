@@ -1,9 +1,19 @@
+import { useState, useEffect } from 'react';
 import { useLang } from '../context/LangContext';
 import DietaryBadge from './DietaryBadge';
 import './FoodCard.css';
 
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80';
+
 export default function FoodCard({ item, onClick }) {
   const { lang } = useLang();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imgSrc, setImgSrc] = useState(item.image);
+
+  useEffect(() => {
+    setImgSrc(item.image);
+    setImageLoaded(false);
+  }, [item.image]);
 
   const name = item.name[lang] || item.name.en;
   const description = item.description[lang] || item.description.en;
@@ -14,6 +24,13 @@ export default function FoodCard({ item, onClick }) {
       e.preventDefault();
       onClick(item);
     }
+  };
+
+  const handleImageError = () => {
+    if (imgSrc !== FALLBACK_IMAGE) {
+      setImgSrc(FALLBACK_IMAGE);
+    }
+    setImageLoaded(true);
   };
 
   return (
@@ -28,15 +45,22 @@ export default function FoodCard({ item, onClick }) {
       {/* Image */}
       <div className="food-card-img-wrap">
         <img
-          src={item.image}
-          alt={name}
-          className="food-card-img"
-          loading="lazy"
-          onError={(e) => {
-            e.currentTarget.src =
-              'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=60';
+          ref={(el) => {
+            if (el && el.complete && !imageLoaded) {
+              setImageLoaded(true);
+            }
           }}
+          src={imgSrc}
+          alt={name}
+          className={`food-card-img ${imageLoaded ? 'food-card-img--loaded' : ''}`}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setImageLoaded(true)}
+          onError={handleImageError}
         />
+        {/* Subtle bottom gradient for text readability */}
+        <div className="food-card-img-gradient" aria-hidden="true" />
+
         {/* Badges overlay */}
         <div className="food-card-badges">
           {item.dishNumber && (

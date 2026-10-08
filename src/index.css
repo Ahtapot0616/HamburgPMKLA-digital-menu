@@ -1,44 +1,87 @@
 /* ========================================================
    PAMUKKALE DIGITAL MENU — DESIGN SYSTEM TOKENS & BASE
+   Premium Turkish Restaurant — Art-Directed Visual System
    ======================================================== */
 
 :root {
-  /* Color Palette */
-  --bg: #0c0907;
-  --bg-deep: #080605;
-  --surface: #17120e;
-  --surface-alt: #221b15;
-  --surface-glass: rgba(23, 18, 14, 0.75);
-  
-  /* Gold Accents */
-  --gold: #c99e52;
-  --gold-light: #e6c587;
-  --gold-dark: #966f2c;
-  --gold-glow: rgba(201, 158, 82, 0.25);
-  --gold-subtle: rgba(201, 158, 82, 0.12);
+  /* ── Palette ── */
+  --bg:          #0b0806;
+  --bg-deep:     #070503;
+  --bg-warm:     #0f0b08;
+
+  --surface:     #161110;
+  --surface-alt: #1e1714;
+  --surface-raised: #241c17;
+  --surface-glass: rgba(22, 17, 16, 0.82);
+
+  /* Gold System — warm champagne-to-amber progression */
+  --gold:        #c8a162;
+  --gold-light:  #e2c68e;
+  --gold-dark:   #8e6a32;
+  --gold-muted:  #a68850;
+  --gold-glow:   rgba(200, 161, 98, 0.22);
+  --gold-subtle: rgba(200, 161, 98, 0.10);
+
+  /* Warm Accents */
+  --terracotta:       #b0694a;
+  --terracotta-subtle: rgba(176, 105, 74, 0.12);
+  --olive:            #6b7a52;
+  --olive-subtle:     rgba(107, 122, 82, 0.12);
 
   /* Typography Colors */
-  --white: #faf7f2;
-  --text-main: #f0ebe1;
-  --text-muted: rgba(240, 235, 225, 0.6);
-  --text-subtle: rgba(240, 235, 225, 0.38);
+  --white:       #f8f4ee;
+  --ivory:       #ede7dd;
+  --text-main:   #e8e1d6;
+  --text-muted:  rgba(232, 225, 214, 0.58);
+  --text-subtle: rgba(232, 225, 214, 0.34);
 
-  /* Borders & Shadows */
-  --border-subtle: rgba(201, 158, 82, 0.16);
-  --border-medium: rgba(201, 158, 82, 0.32);
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.7);
+  /* Borders & Elevation */
+  --border-subtle: rgba(200, 161, 98, 0.14);
+  --border-medium: rgba(200, 161, 98, 0.28);
+  --border-strong: rgba(200, 161, 98, 0.45);
+
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.65);
+  --shadow-gold: 0 4px 20px rgba(200, 161, 98, 0.2);
 
   /* Font Families */
-  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
+  /* Spacing Scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 36px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 0.15s;
+  --duration-normal: 0.25s;
+  --duration-slow: 0.4s;
+
   /* Layout */
-  --max-width: 1040px;
+  --max-width: 1080px;
+  --header-h: 58px;
+  --catbar-h: 54px;
 }
 
-/* Reset & Box Sizing */
+/* ── Reset & Box Sizing ── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -50,34 +93,37 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg);
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font-body);
   color: var(--text-main);
   background: var(--bg);
-  min-height: 100vh;
-  line-height: 1.5;
+  min-height: 100dvh;
+  line-height: 1.55;
   overflow-x: hidden;
-  background-image: 
-    radial-gradient(ellipse at 50% 0%, rgba(201, 158, 82, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 100% 40%, rgba(130, 40, 20, 0.04) 0%, transparent 40%),
-    radial-gradient(circle at 0% 80%, rgba(201, 158, 82, 0.04) 0%, transparent 40%);
+  /* Subtle ambient glow — restrained, no gradients on scroll */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -5%, rgba(200, 161, 98, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 85% 50%, rgba(176, 105, 74, 0.03) 0%, transparent 60%);
   background-attachment: fixed;
 }
 
 #root {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
-/* Typography Defaults */
+/* ── Typography Defaults ── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--white);
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.015em;
+  line-height: 1.2;
 }
 
 a {
@@ -90,12 +136,18 @@ button {
   border: none;
   background: none;
   cursor: pointer;
+  color: inherit;
 }
 
-/* Custom Scrollbars */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Custom Scrollbar (Webkit) ── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -103,25 +155,68 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(201, 158, 82, 0.25);
+  background: rgba(200, 161, 98, 0.2);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(201, 158, 82, 0.45);
+  background: rgba(200, 161, 98, 0.4);
 }
 
-/* Accessibility */
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 161, 98, 0.2) transparent;
+}
+
+/* ── Accessibility ── */
 :focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
 
+/* ── Selection ── */
+::selection {
+  background: rgba(200, 161, 98, 0.3);
+  color: var(--white);
+}
+
+/* ── Reduced Motion ── */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ── Reveal Animation Utility ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
